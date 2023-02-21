@@ -44,7 +44,7 @@ def main(normalized=False):
     if normalized:
         pixel_selector = NormalizedPixelSelector.build_tree_from_list(
             display_list)
-        pixel_selector.set_and_return_weight()
+        pixel_selector.get_weight()
     else:
         pixel_selector = DefaultPixelSelector.build_tree_from_list(
             display_list)

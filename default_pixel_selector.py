@@ -1,12 +1,13 @@
-from node import Node
 import random
+from abc import ABCMeta
+from default_selector import DefaultSelector, BaseSelector
 
 
-class DefaultPixelSelector(Node):
+class PixelSelector(BaseSelector, metaclass=ABCMeta):
     def __init__(self, data):
         super().__init__(data)
 
-    def get_something(self):
+    def _get_something(self):
         if not self.isLeafNode():
             raise Exception("This is not a leaf node")
         x_limits = self.data.get("x_limits")
@@ -33,3 +34,8 @@ class DefaultPixelSelector(Node):
             else:
                 root.add_child(cls.build_tree_from_list(display))
         return root
+
+
+class DefaultPixelSelector(DefaultSelector, PixelSelector):
+    def __init__(self, data):
+        super().__init__(data)
