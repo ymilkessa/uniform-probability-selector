@@ -1,4 +1,5 @@
 import tkinter as tk
+import time
 
 
 class Gui:
@@ -9,27 +10,23 @@ class Gui:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.pixels = []
-        for i in range(height):
-            row = []
-            for j in range(width):
-                row.append("black")
-            self.pixels.append(row)
 
         self.root = tk.Tk()
-        self.canvas = tk.Canvas(self.root, width=width, height=height)
+        self.canvas = tk.Canvas(self.root, width=width,
+                                height=height, bg="black")
         self.canvas.pack()
 
-        self.draw_pixels()
-
-    def draw_pixels(self):
-        for i in range(self.height):
-            for j in range(self.width):
-                self.canvas.create_rectangle(
-                    j, i, j+1, i+1, fill=self.pixels[i][j], outline="")
+    def run_loop(self):
+        self.root.mainloop()
 
     def mark_pixels(self, pixel_coords):
-        for coord in pixel_coords:
-            i, j = coord
-            self.pixels[i][j] = "white"
-        self.draw_pixels()
+        batch_size = 20
+        interval = 400
+        for i in range(0, len(pixel_coords), batch_size):
+            max_k = min(batch_size, len(pixel_coords) - i)
+            for k in range(max_k):
+                i, j = pixel_coords[i+k]
+                self.canvas.create_rectangle(
+                    i, j, i+1, j+1, fill="white", outline="")
+            self.root.after(interval, self.root.update)
+            time.sleep(interval/1000)

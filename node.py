@@ -9,6 +9,10 @@ class Node(ABC):
 
     @abstractmethod
     def get_something(self):
+        """
+        Used in a leaf note to select a value from the space of values
+        represented by this node.
+        """
         pass
 
     def add_child(self, child):

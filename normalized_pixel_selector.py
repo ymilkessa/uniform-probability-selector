@@ -31,16 +31,13 @@ class NormalizedPixelSelector(DefaultPixelSelector):
         if self.track_weight:
             return self.weight
         if self.isLeafNode():
-            x_range = self.data.x_limits.max - self.data.x_limits.min
-            y_range = self.data.y_limits.max - self.data.y_limits.min
+            x_range = self.data.get("x_limits")[
+                1] - self.data.get("x_limits")[0]
+            y_range = self.data.get("y_limits")[
+                1] - self.data.get("y_limits")[0]
             self.weight = x_range * y_range
         else:
-            self.weight = sum([child.set_weight() for child in self.children])
+            self.weight = sum([child.set_and_return_weight()
+                              for child in self.children])
         self.track_weight = True
         return self.weight
-
-    @classmethod
-    def build_tree_from_list(cls, display_list):
-        root = super().build_tree_from_list(display_list)
-        root.set_and_return_weight()
-        return root

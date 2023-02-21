@@ -2,6 +2,7 @@ from default_pixel_selector import DefaultPixelSelector
 from normalized_pixel_selector import NormalizedPixelSelector
 from gui import Gui
 import argparse
+from threading import Thread
 
 square_width = 80
 
@@ -43,6 +44,7 @@ def main(normalized=False):
     if normalized:
         pixel_selector = NormalizedPixelSelector.build_tree_from_list(
             display_list)
+        pixel_selector.set_and_return_weight()
     else:
         pixel_selector = DefaultPixelSelector.build_tree_from_list(
             display_list)
@@ -53,11 +55,12 @@ def main(normalized=False):
 
     # Create a gui with the dimensions above
     gui = Gui(total_width, total_height)
-    print("Displa on")
     print("About to start marking pixels")
     # Mark the pixels in the gui
-    gui.mark_pixels(pixel_selections)
-    gui.root.mainloop()
+    # Run mark_pixels in a separate thread
+    marking_thread = Thread(target=gui.mark_pixels, args=(pixel_selections,))
+    marking_thread.start()
+    gui.run_loop()
 
 
 if __name__ == "__main__":
