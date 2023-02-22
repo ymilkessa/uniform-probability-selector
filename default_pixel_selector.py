@@ -7,13 +7,13 @@ class PixelSelector(BaseSelector, metaclass=ABCMeta):
     def __init__(self, data):
         super().__init__(data)
 
-    def _get_something(self):
+    def get_something(self):
         if not self.isLeafNode():
             raise Exception("This is not a leaf node")
         x_limits = self.data.get("x_limits")
         y_limits = self.data.get("y_limits")
-        x_value = random.randint(x_limits[0], x_limits[1])
-        y_value = random.randint(y_limits[0], y_limits[1])
+        x_value = random.randint(x_limits[0], x_limits[1]-1)
+        y_value = random.randint(y_limits[0], y_limits[1]-1)
         return (x_value, y_value)
 
     @classmethod
@@ -37,5 +37,9 @@ class PixelSelector(BaseSelector, metaclass=ABCMeta):
 
 
 class DefaultPixelSelector(DefaultSelector, PixelSelector):
-    def __init__(self, data):
-        super().__init__(data)
+    """
+    A pixel coordinate selector that uses random branch selection
+    to pick coordinates.
+    (Mixture of DefaultSelector and PixelSelector. All methods are inherited.)
+    """
+    pass

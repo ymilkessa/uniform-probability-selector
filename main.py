@@ -58,7 +58,7 @@ def main(normalized=False):
     print("About to start marking pixels")
     # Mark the pixels in the gui
     # Run mark_pixels in a separate thread
-    marking_thread = Thread(target=gui.mark_pixels, args=(pixel_selections,))
+    marking_thread = Thread(target=gui.mark_pixels, args=(pixel_selections, 2))
     marking_thread.start()
     gui.run_loop()
 

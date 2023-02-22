@@ -8,37 +8,46 @@ class NormalizedSelector(BaseSelector, metaclass=ABCMeta):
 
     def __init__(self, data):
         super().__init__(data)
-        self.weight: int = 0
+        self.total_weight: int = 0
         self.track_weight: bool = False
+        self.weights: list[int] = []
+
+    def _compute_and_set_weights(self):
+        """Insert the weight of each child node to the self.weights, and also compute the total weight
+        and set that to self.total_weight"""
+        if self.isLeafNode():
+            self.set_leaf_weight()
+        else:
+            self.weights = [child.get_weight() for child in self.children]
+            self.total_weight = sum(self.weights)
 
     @abstractmethod
-    def _compute_and_set_weight(self):
-        """Set the weight of this node and return it"""
+    def set_leaf_weight(self):
+        """If this node is a leaf, compute and return the weight"""
         pass
 
     def get_weight(self):
         """Get the weight of this node"""
         if self.track_weight:
-            return self.weight
+            return self.total_weight
         else:
-            self._compute_and_set_weight()
+            self._compute_and_set_weights()
             self.track_weight = True
-            return self.weight
+            return self.total_weight
 
     def add_child(self, child):
         super().add_child(child)
         if self.track_weight:
-            self.weight += child.get_weight()
+            self.total_weight += child.get_weight()
 
     def random_selection(self):
+        """
+        Returns a randomly selected value from the tree.
+        If the node has children, it will perform a weighted random selection to 
+        pick a child node and then gets a random value from that child node.
+        If this is a leaf node, it will call the get_something() method to get some value.
+        """
         if self.isLeafNode():
-            return self._get_something()
-        weight = self.get_weight()
-        random_index = random.randint(1, weight+1)
-        index_cursor = 0
-        for child in self.children:
-            index_cursor += child.get_weight()
-            if index_cursor >= random_index:
-                return child.random_selection()
-        raise Exception(
-            "Something went wrong in random_selection: please ensure that the weights of the child nodes add up to the total weight.")
+            return self.get_something()
+        random_child_node = random.choices(self.children, weights=self.weights)
+        return random_child_node[0].random_selection()

@@ -19,7 +19,7 @@ class Gui:
     def run_loop(self):
         self.root.mainloop()
 
-    def mark_pixels(self, pixel_coords):
+    def mark_pixels(self, pixel_coords, size=1):
         batch_size = 20
         interval = 400
         for i in range(0, len(pixel_coords), batch_size):
@@ -27,6 +27,6 @@ class Gui:
             for k in range(max_k):
                 i, j = pixel_coords[i+k]
                 self.canvas.create_rectangle(
-                    i, j, i+1, j+1, fill="white", outline="")
+                    i, j, i+size, j+size, fill="white", outline="")
             self.root.after(interval, self.root.update)
             time.sleep(interval/1000)

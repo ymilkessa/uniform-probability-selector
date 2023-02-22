@@ -12,7 +12,7 @@ class BaseSelector(metaclass=ABCMeta):
         self.children = []
 
     @abstractmethod
-    def _get_something(self):
+    def get_something(self):
         """
         Used in a leaf note to select a value from the space of values
         represented by this node.
@@ -36,4 +36,4 @@ class DefaultSelector(BaseSelector):
             next_node = random.choice(self.children)
             return next_node.random_selection()
         else:
-            return self._get_something()
+            return self.get_something()
