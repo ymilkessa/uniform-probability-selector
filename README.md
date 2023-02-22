@@ -13,13 +13,13 @@ beneath it.
 I've included a program that uses a tree structure to select random locations on a square. The example provided
 in `main.py` uses a square with 9 partitions as shown below.
 
-<img src="https://github.com/ymilkessa/uniform-probability-selector/blob/main/demo_square_mapping.png" width=300>
+<img src="https://github.com/ymilkessa/uniform-probability-selector/blob/main/demo_square_mapping.png" width=250>
 
 The randomized point selectors for the partitions are arranged according to the following graph. Each leaf node can randomly select a point in its own domain.
 
 <img src="https://github.com/ymilkessa/uniform-probability-selector/blob/main/demo_tree.png" width=400>
 
-In the program, the root node is invoked to generate 500 points selected at random. In the default implementation, about half of the randomly selected points would be in section A. That is because if you pick a branch at random from the root, you should land on A about half of the time. Similarly, section B would have about one-fourth of these points, section C would have one-eights, .... Blow is a plot of the resulting points on the square.
+In the program, the root node is invoked to generate 500 points selected at random. In the default implementation, about half of the randomly selected points would be in section A. That is because if you pick a branch at random from the root, you should land on A about half of the time. Similarly, section B would have about one-fourth of these points, section C would have one-eighths, .... Blow is a plot of the resulting points on the square.
 
 <img src="https://github.com/ymilkessa/uniform-probability-selector/blob/main/default_random_selections_display.gif" width=400>
 
@@ -32,6 +32,7 @@ However, when using the weighted branch selection (which I call normalized selec
 Here is how you can run the random point selectors.
 
 Prerequisites: python3 and pipenv
+
 Download the repo and run the following commands in the main folder.
 
 To select points using the random branch selector, run:
